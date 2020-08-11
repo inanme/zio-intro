@@ -18,8 +18,8 @@ object MainDot extends zio.App {
   def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] = {
     val m = for {
       fiber <- (putStrLn(".") *> ZIO.sleep(1.second)).forever.fork
-      _ <- ZIO.sleep(10 seconds)
-      _ <- fiber.interrupt
+      _     <- ZIO.sleep(10 seconds)
+      _     <- fiber.interrupt
     } yield ()
     m.exitCode
   }
@@ -40,6 +40,29 @@ object Service1 extends zio.App {
 
   def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] =
     myFunc.provideCustomLayer(ServiceLayer).flatMap(s => putStrLn(s.toString)).exitCode
+
+}
+
+object Service1a extends zio.App {
+  trait Service {
+    def getInt: Task[Int]
+  }
+
+  val ServiceLayer: Service = {
+    new Service {
+      def getInt: Task[Int] = ZIO.succeed(1)
+    }
+  }
+
+  def myFunc: RIO[Service, Int] =
+    for {
+      service <- ZIO.environment[Service]
+      myInt <- service.getInt
+    } yield myInt * 10
+
+  def run(args: List[String]): ZIO[ZEnv, Nothing, ExitCode] = {
+    myFunc.provide(ServiceLayer).flatMap(s => putStrLn(s.toString)).exitCode
+  }
 
 }
 
