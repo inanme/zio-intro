@@ -9,11 +9,11 @@ gitHeadCommitSha in ThisBuild := Process("git rev-parse HEAD").lineStream.head
 cancelable in Global := true
 
 lazy val root = (project in file(".")).settings(
-  addCompilerPlugin("org.typelevel" % "kind-projector_2.13.2" % "0.11.0"),
+  addCompilerPlugin("org.typelevel" % "kind-projector_2.13.3" % "0.11.0"),
   inThisBuild(
     Seq(
       version := "0.1",
-      scalaVersion := "2.13.2",
+      scalaVersion := "2.13.3",
       organization := "org.inanme"
     )
   ),
@@ -37,12 +37,12 @@ lazy val root = (project in file(".")).settings(
       "-Ymacro-annotations"
     ),
   libraryDependencies ++= Seq(
-      "dev.zio"       %% "zio"          % "1.0.0-RC21-2",
-      "dev.zio"       %% "zio-streams"  % "1.0.0-RC21-2",
-      "dev.zio"       %% "zio-nio"      % "1.0.0-RC8",
-      "dev.zio"       %% "zio-test"     % "1.0.0-RC21-2" % Test,
-      "dev.zio"       %% "zio-test-sbt" % "1.0.0-RC21-2" % Test,
-      "org.scalatest" %% "scalatest"    % "3.2.0"        % Test
+      "dev.zio"       %% "zio"          % "1.0.1",
+      "dev.zio"       %% "zio-streams"  % "1.0.1",
+      "dev.zio"       %% "zio-nio"      % "1.0.0-RC9",
+      "dev.zio"       %% "zio-test"     % "1.0.1" % Test,
+      "dev.zio"       %% "zio-test-sbt" % "1.0.1" % Test,
+      "org.scalatest" %% "scalatest"    % "3.2.2" % Test
     ),
   testFrameworks += new TestFramework("zio.test.sbt.ZTestFramework"),
   makeVersionProperties := {
